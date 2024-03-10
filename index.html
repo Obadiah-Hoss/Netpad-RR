@@ -10,13 +10,22 @@
 
 <body>
 
-<h1>Welcome to Netpad</h1>
-<p>Netpad is a system to let people queue for having control over a game's input.</p>
+<h1>Welcome to Netpad RR</h1>
+<p>Netpad RR is a system to let people queue for having control over a game's input.</p>
 <p>Control time is distributed in a round robin fashion. Donors can get longer control time and jump 5 spots in the queue.</p>
 
 
-<h3>Connection status:</h3>
+<h3>Controller connection status:</h3>
 <h3 id="conn-status">Not Connected [press a button to get started]</h3>
+
+<input type="text" id="UsernameInput"> Display Name
+<br>
+<br>
+<input type="text" id="IPInput"> Host IP
+<br>
+<br>
+<button id="ConnectButton">Connect</button>
+<h3 id="ConnectionStatus"></h3>
 
 
 <script src="index.js"></script>

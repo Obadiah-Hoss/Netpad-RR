@@ -1,3 +1,4 @@
+
 if (!('getGamepads' in navigator)) {
     alert('Gamepad API not supported in this browser.');
 }
@@ -18,22 +19,37 @@ window.addEventListener("gamepaddisconnected", (event) => {
     }
 });
 
-function updateGamepadState() {
+
+
+window.requestAnimationFrame(updateGamepadState);
+
+
+
+async function updateGamepadState() {
     const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
     for (let i = 0; i < gamepads.length; i++) {
         const gamepad = gamepads[i];
         if (gamepad) {
-            console.log(`Gamepad at index ${gamepad.index} is connected.`);
-            // Access gamepad.axes and gamepad.buttons here
-            for (let j = 0; j < gamepad.buttons.length; j++) {
-                const button = gamepad.buttons[j];
-                if (button.pressed) {
-                    console.log(`Button ${j} is pressed.`);
-                }
-            }
-            for (let k = 0; k < gamepad.axes.length; k++) {
-                const axis = gamepad.axes[k];
-                console.log(`Axis ${k} is at position ${axis}.`);
+            // Prepare the data you want to send
+            const dataToSend = {
+                gamepadIndex: gamepad.index,
+                buttons: Array.from(gamepad.buttons, button => button.pressed),
+                axes: Array.from(gamepad.axes)
+            };
+
+            // Use fetch to send a POST request to your Flask server
+            try {
+                const response = await fetch('/gamepad', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dataToSend),
+                });
+                const jsonResponse = await response.json();
+                console.log(jsonResponse); // Handle the response from the server
+            } catch (error) {
+                console.error('Error sending gamepad data:', error);
             }
         }
     }
@@ -41,3 +57,10 @@ function updateGamepadState() {
 }
 
 window.requestAnimationFrame(updateGamepadState);
+
+
+
+
+
+
+
